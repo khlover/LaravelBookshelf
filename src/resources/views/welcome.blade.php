@@ -3,22 +3,20 @@
 
 <?php
 
+use Illuminate\Support\Facades\DB;
+
 class Book
 {
+    public $bookid;
     public $title;
     public $author;
 
-    public function __construct()
+    public function remove($id)
     {
-        $this->title = $_GET['title'];
-        $this->author = $_GET['author'];
+        DB::delete('delete from books where id= ?', [$id]);
     }
 
-    public function delete()
-    {
-    }
-
-    public function edit()
+    public function edit($field)
     {
     }
 }
@@ -28,25 +26,19 @@ class BookShelf
 
     public $books = array();
 
-    public function add()
-    {
-        $book = new Book;
-        array_push($this->books, $book);
-        console_log($this->books);
-    }
-
     public function __construct()
     {
-        $this->books = $this->books;
+        $getbooks = DB::table('books')
+            ->select(array('bookid', 'title', 'author'))
+            ->get();
+
+        $this->books = $getbooks;
     }
 }
 
 if (!isset($shelf)) {
-    console_log("IM GENERATED");
     $shelf = new BookShelf;
 }
-
-
 
 function console_log($output, $with_script_tags = true)
 {
@@ -125,6 +117,7 @@ function console_log($output, $with_script_tags = true)
 </head>
 
 <body>
+    <?PHP $_POST = array(); ?>
     <div class="flex-center position-ref full-height">
         @if (Route::has('login'))
         <div class="top-right links">
@@ -146,31 +139,29 @@ function console_log($output, $with_script_tags = true)
             </div>
 
             <div class="form">
-                <form method="GET">
+                <form method="POST" action="{{url('addbook')}}">
+                    @csrf
                     Title: <input type="text" name="title"><br>
                     Author: <input type="text" name="author"><br>
                     <input type="submit" value="Add" />
                 </form>
             </div>
 
-            <?php
-            if (isset($_GET['title'])) {
-                $shelf->add();
-            }
-
-            ?>
-
             <div class="booklist">
                 <table style="width: 100%">
                     <tr>
                         <th>Title</th>
                         <th>Author</th>
+                        <th> </th>
                     </tr>
 
                     <?php foreach ($shelf->books as $book) : ?>
+                        <?php $title = $book->title ?>
                         <tr>
                             <td><?php echo htmlspecialchars($book->title) ?> </td>
                             <td><?php echo htmlspecialchars($book->author) ?> </td>
+                            <td><button><?php echo htmlspecialchars($book->bookid) ?></button></td>
+
                         <?php endforeach ?>
             </div>
         </div>
