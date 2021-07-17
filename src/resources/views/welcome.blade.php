@@ -88,6 +88,7 @@ function console_log($output, $with_script_tags = true)
         .export {
             display: flex;
             justify-content: center;
+            gap: 5px;
 
         }
 
@@ -128,7 +129,6 @@ function console_log($output, $with_script_tags = true)
                 </form>
             </div>
 
-
             <div class="booklist">
                 <table style="width: 100%">
                     <tr>
@@ -153,17 +153,16 @@ function console_log($output, $with_script_tags = true)
 
             <p> Export to CSV </p>
             <div class="export">
-                <form method="GET" action="/export/csv/">
-                    <input type="submit" class="button" value="Titles" />
+                <form method="GET" action="/export/csv/title">
+                    <input type="submit" class="button" value="By Title" />
+                </form>
+
+                <form method="GET" action="/export/csv/author">
+                    <input type="submit" class="button" value="By Author" />
                 </form>
 
                 <form method="GET" action="/export/csv/">
-                    <input type="submit" class="button" value="Authors" />
-                </form>
-
-                <form method="GET" action="/export/csv">
                     <input type="submit" class="button" value="All" />
-                </form>
                 </form>
             </div>
 

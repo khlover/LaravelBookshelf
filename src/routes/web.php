@@ -17,6 +17,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/addbook', [DatabaseController::class, 'insertBook']);
 Route::post('/delete/{id}', [DatabaseController::class, 'deleteBook']);
-Route::get('/export/csv', [DatabaseController::class, 'exportToCSV']);
 
+Route::get('/export/csv/{field?}', [DatabaseController::class, 'exportToCSV']);
 Route::get('/', [DatabaseController::class, 'selectBooks']);
