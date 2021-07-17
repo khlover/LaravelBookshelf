@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\DatabaseAccess;
+namespace App\Http\Controllers\DatabaseUse;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class AddBookController extends Controller
 {
@@ -11,10 +12,18 @@ class AddBookController extends Controller
      *
      * @return void
      */
+
     public function add()
     {
+        console_log("Deleted");
         $title = $_POST['title'];
         $author = $_POST['author'];
-        DB::insert('insert into books (title, author) values (?, ?)', [$title, $author]);
+
+        DB::table('books')->insert([
+            'title' => $title,
+            'author' => $author
+        ]);
+
+        return redirect('/');
     }
 }

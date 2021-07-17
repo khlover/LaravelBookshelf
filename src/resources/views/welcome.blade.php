@@ -3,43 +3,6 @@
 
 <?php
 
-use Illuminate\Support\Facades\DB;
-
-class Book
-{
-    public $bookid;
-    public $title;
-    public $author;
-
-    public function remove($id)
-    {
-        DB::delete('delete from books where id= ?', [$id]);
-    }
-
-    public function edit($field)
-    {
-    }
-}
-
-class BookShelf
-{
-
-    public $books = array();
-
-    public function __construct()
-    {
-        $getbooks = DB::table('books')
-            ->select(array('bookid', 'title', 'author'))
-            ->get();
-
-        $this->books = $getbooks;
-    }
-}
-
-if (!isset($shelf)) {
-    $shelf = new BookShelf;
-}
-
 function console_log($output, $with_script_tags = true)
 {
     $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
@@ -155,13 +118,17 @@ function console_log($output, $with_script_tags = true)
                         <th> </th>
                     </tr>
 
-                    <?php foreach ($shelf->books as $book) : ?>
+                    <?php foreach ($books as $book) : ?>
                         <?php $title = $book->title ?>
                         <tr>
                             <td><?php echo htmlspecialchars($book->title) ?> </td>
                             <td><?php echo htmlspecialchars($book->author) ?> </td>
-                            <td><button><?php echo htmlspecialchars($book->bookid) ?></button></td>
-
+                            <td>
+                                <form method="post" action="/delete/<?= $book->bookid ?>">
+                                    @csrf
+                                    <input type="submit" class="button" value="Del"></button>
+                            </td>
+                            </form>
                         <?php endforeach ?>
             </div>
         </div>
