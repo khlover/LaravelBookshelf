@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\DatabaseUse\AddBookController;
-use App\Http\Controllers\DatabaseUse\DeleteBookController;
-use App\Http\Controllers\DatabaseUse\GetBooksController;
+use App\Http\Controllers\Database\DatabaseController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -17,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/addbook', [AddBookController::class, 'add']);
-Route::post('/delete/{id}', [DeleteBookController::class, 'delete']);
+Route::post('/addbook', [DatabaseController::class, 'insertBook']);
+Route::post('/delete/{id}', [DatabaseController::class, 'deleteBook']);
 
-Route::get('/', [GetBooksController::class, 'getBooks']);
+Route::get('/', [DatabaseController::class, 'selectBooks']);
