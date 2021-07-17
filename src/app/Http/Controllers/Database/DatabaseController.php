@@ -43,23 +43,25 @@ class DatabaseController extends Controller
         return redirect('/');
     }
 
-    public function exportToCSV($field = null)
+    public function exportToCSV(Request $request)
     {
+        $field = $request->field;
 
         if ($field == null) {
             $data = DB::table('books')->select('title', 'author')->get();
+            $field = "Book";
         } else {
             $data = DB::table('books')->select($field)->get();
         }
-        array_to_csv_download($data);
+        array_to_csv_download($data, $field);
     }
 }
 
 
-function array_to_csv_download($array)
+function array_to_csv_download($array, $field)
 {
     header("Content-Type: application/csv");
-    header("Content-Disposition: attachment; filename=export.csv");
+    header("Content-Disposition: attachment; filename= " . $field . "s.csv");
 
     $f = fopen('php://output', 'w');
 
