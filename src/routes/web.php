@@ -1,6 +1,10 @@
 <?php
 
-use App\Http\Controllers\DatabaseAcesss\AddBookController;
+use App\Http\Controllers\DatabaseUse\AddBookController;
+use App\Http\Controllers\DatabaseUse\DeleteBookController;
+use App\Http\Controllers\DatabaseUse\GetBooksController;
+use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,14 +17,7 @@ use App\Http\Controllers\DatabaseAcesss\AddBookController;
 |
 */
 
-Route::post('/addbook', function () {
-    DB::insert('insert into books (title, author) values (?, ?)', [$_POST['title'], $_POST['author']]);
-    return view('welcome');
-});
+Route::post('/addbook', [AddBookController::class, 'add']);
+Route::post('/delete/{id}', [DeleteBookController::class, 'delete']);
 
-
-
-
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [GetBooksController::class, 'getBooks']);
