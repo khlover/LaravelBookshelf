@@ -3,6 +3,18 @@
 
 <?php
 
+//mode - CSV / XML
+//field - title/author/all
+//books
+
+function exportfile($type, $field, $books)
+{
+
+    $filetype = $type;
+
+    $fp = fopen($field + "." + $filetype, "w");
+}
+
 function console_log($output, $with_script_tags = true)
 {
     $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
@@ -73,6 +85,12 @@ function console_log($output, $with_script_tags = true)
             text-transform: uppercase;
         }
 
+        .export {
+            display: flex;
+            justify-content: center;
+
+        }
+
         .m-b-md {
             margin-bottom: 30px;
         }
@@ -101,7 +119,7 @@ function console_log($output, $with_script_tags = true)
                 Bookshelf
             </div>
 
-            <div class="form">
+            <div class="input">
                 <form method="POST" action="{{url('addbook')}}">
                     @csrf
                     Title: <input type="text" name="title"><br>
@@ -109,6 +127,7 @@ function console_log($output, $with_script_tags = true)
                     <input type="submit" value="Add" />
                 </form>
             </div>
+
 
             <div class="booklist">
                 <table style="width: 100%">
@@ -126,11 +145,31 @@ function console_log($output, $with_script_tags = true)
                             <td>
                                 <form method="post" action="/delete/<?= $book->bookid ?>">
                                     @csrf
-                                    <input type="submit" class="button" value="Del"></button>
+                                    <input type="submit" class="button" value="Del" />
                             </td>
                             </form>
                         <?php endforeach ?>
             </div>
+
+            <p> Export to CSV </p>
+            <div class="export">
+                <form method="GET" action="/export/csv/">
+                    <input type="submit" class="button" value="Titles" />
+                </form>
+
+                <form method="GET" action="/export/csv/">
+                    <input type="submit" class="button" value="Authors" />
+                </form>
+
+                <form method="GET" action="/export/csv">
+                    <input type="submit" class="button" value="All" />
+                </form>
+                </form>
+            </div>
+
+
+
+
         </div>
     </div>
 </body>
