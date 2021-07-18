@@ -17,27 +17,25 @@ class BookController extends Controller
      * @return void
      */
 
-    function selectBook(Request $request)
+    function selectBook($id)
     {
-        $bookid = $request->id;
-        $book = Book::where('bookid', $bookid)->first();
+
+        $book = Book::find($id);
         return view('edit', ['book' => $book]);
     }
 
 
-    function selectBooks(Request $request)
+    function selectBooks()
     {
         $books = Book::all();
         return view('welcome', ['books' => $books]);
     }
 
-    function sort(Request $request)
+    function sort($field)
     {
-        $field = $request->field;
         $books = Book::orderBy($field, 'asc')->get();
         return view('welcome', ['books' => $books]);
     }
-
 
     function searchAuthor()
     {
@@ -67,29 +65,26 @@ class BookController extends Controller
         return redirect('/');
     }
 
-    public function editBook(Request $request)
+    public function editBook($id)
     {
-        $bookid = $request->id;
         $title = $_POST['title'];
         $author = $_POST['author'];
 
-        $updated = DB::table('books')
-            ->where('bookid', $bookid)
-            ->update(['title' => $title, 'author' => $author]);
+        $target = Book::find($id);
+        $target->update(['title' => $title, 'author' => $author]);
+
         return redirect('/');
     }
 
-    public function deleteBook(Request $request)
+    public function deleteBook($id)
     {
-        $bookid = $request->id;
-        Book::where('bookid', $bookid)->delete();
+        $target = Book::findOrFail($id);
+        $target->delete();
         return redirect('/');
     }
 
-    public function exportToCSV(Request $request)
+    public function exportToCSV($field)
     {
-        $field = $request->field;
-
         if ($field == null) {
             $data = DB::table('books')->select('title', 'author')->get();
             $field = "Book";
