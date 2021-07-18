@@ -66,10 +66,10 @@ class BookController extends Controller
         $field = $request->field;
 
         if ($field == null) {
-            $data = Book::select('title', 'author')->get();
+            $data = DB::table('books')->select('title', 'author')->get();
             $field = "Book";
         } else {
-            $data = Book::select($field)->get();
+            $data = DB::table('books')->select($field)->get();
         }
         array_to_csv_download($data, $field);
     }
@@ -85,7 +85,7 @@ function array_to_csv_download($array, $field)
 
     foreach ($array as $line) {
         if (isset($line)) {
-            fputcsv($f, (array) $line, '-');
+            fputcsv($f, (array) $line, ':');
         }
     }
 
