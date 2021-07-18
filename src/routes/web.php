@@ -23,6 +23,7 @@ Route::post('/edit/{id}', [BookController::class, 'editBook']);
 Route::get('/export/csv/{field?}', [BookController::class, 'exportToCSV']);
 Route::get('/export/xml/{field?}', [BookController::class, 'exportToXML']);
 Route::get('/sort/{field?}', [BookController::class, 'sort']);
+Route::get('/edit/{id}', [BookController::class, 'selectBook']);
 Route::get('/search/author', [BookController::class, 'searchAuthor']);
 Route::get('/search/title', [BookController::class, 'searchTitle']);
 Route::get('/', [BookController::class, 'selectBooks']);

@@ -17,6 +17,13 @@ class BookController extends Controller
      * @return void
      */
 
+    function selectBook(Request $request)
+    {
+        $bookid = $request->id;
+        $book = Book::where('bookid', $bookid)->first();
+        return view('edit', ['book' => $book]);
+    }
+
 
     function selectBooks(Request $request)
     {
@@ -51,14 +58,26 @@ class BookController extends Controller
         $title = $_POST['title'];
         $author = $_POST['author'];
 
-        DB::table('books')->insert([
+        $update = DB::table('books')->insert([
             'title' => $title,
             'author' => $author
         ]);
 
+        console_log($update);
         return redirect('/');
     }
 
+    public function editBook(Request $request)
+    {
+        $bookid = $request->id;
+        $title = $_POST['title'];
+        $author = $_POST['author'];
+
+        $updated = DB::table('books')
+            ->where('bookid', $bookid)
+            ->update(['title' => $title, 'author' => $author]);
+        return redirect('/');
+    }
 
     public function deleteBook(Request $request)
     {
@@ -66,7 +85,6 @@ class BookController extends Controller
         Book::where('bookid', $bookid)->delete();
         return redirect('/');
     }
-
 
     public function exportToCSV(Request $request)
     {
