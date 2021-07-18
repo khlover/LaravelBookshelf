@@ -32,10 +32,17 @@ class BookController extends Controller
     }
 
 
-    function search()
+    function searchAuthor()
     {
         $author = $_GET['author'];
         $books = Book::where('author', 'like', $author)->get();
+        return view('welcome', ['books' => $books]);
+    }
+
+    function searchTitle()
+    {
+        $title = $_GET['title'];
+        $books = Book::where('title', 'like', $title)->get();
         return view('welcome', ['books' => $books]);
     }
 
@@ -92,7 +99,7 @@ class BookController extends Controller
 function array_to_xml_download($obj, $field)
 {
     header('Content-type: text/xml');
-    header('Content-Disposition: attachment; filename="text.xml"');
+    header('Content-Disposition: attachment; filename=' . $field . 's.xml');
 
     $doc = new DOMDocument('1.0');
     $doc->formatOutput = true;
