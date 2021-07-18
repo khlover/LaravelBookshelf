@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Database\DatabaseController;
+use App\Http\Controllers\Database\BookController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -15,8 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/addbook', [DatabaseController::class, 'insertBook']);
-Route::post('/delete/{id}', [DatabaseController::class, 'deleteBook']);
+//Controller Calls
+Route::post('/addbook', [BookController::class, 'insertBook']);
+Route::post('/delete/{id}', [BookController::class, 'deleteBook']);
+Route::post('/edit/{id}', [BookController::class, 'editBook']);
+Route::post('/search/{field}', [BookController::class, 'search']);
 
-Route::get('/export/csv/{field?}', [DatabaseController::class, 'exportToCSV']);
-Route::get('/', [DatabaseController::class, 'selectBooks']);
+Route::get('/export/csv/{field?}', [BookController::class, 'exportToCSV']);
+Route::get('/sort/{field?}', [BookController::class, 'sort']);
+Route::get('/', [BookController::class, 'selectBooks']);
+
+//Navigation
+Route::get('/add', function () {
+    return view('add', ['title' => 'Add Book']);
+});

@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Database;
 
 use App\Http\Controllers\Controller;
+use App\Models\Book;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
-class DatabaseController extends Controller
+class BookController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -16,9 +17,26 @@ class DatabaseController extends Controller
      */
 
 
-    function selectBooks()
+    function selectBooks(Request $request)
     {
-        $books = DB::table('books')->get();
+
+        $books = Book::all();
+        return view('welcome', ['books' => $books]);
+    }
+
+    function sort(Request $request)
+    {
+        $field = $request->field;
+        $books = Book::orderBy($field, 'asc')->get();
+        return view('welcome', ['books' => $books]);
+    }
+
+
+    function search(Request $request)
+    {
+        $field = $request->field;
+        $value = $_POST[$field];
+        $books = Book::where($field, $value)->get();
         return view('welcome', ['books' => $books]);
     }
 
@@ -39,7 +57,7 @@ class DatabaseController extends Controller
     public function deleteBook(Request $request)
     {
         $bookid = $request->id;
-        DB::table('books')->where('bookid', $bookid)->delete();
+        Book::where('bookid', $bookid)->delete();
         return redirect('/');
     }
 
@@ -48,10 +66,10 @@ class DatabaseController extends Controller
         $field = $request->field;
 
         if ($field == null) {
-            $data = DB::table('books')->select('title', 'author')->get();
+            $data = Book::select('title', 'author')->get();
             $field = "Book";
         } else {
-            $data = DB::table('books')->select($field)->get();
+            $data = Book::select($field)->get();
         }
         array_to_csv_download($data, $field);
     }

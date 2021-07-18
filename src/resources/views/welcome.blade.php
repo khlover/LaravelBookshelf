@@ -3,17 +3,7 @@
 
 <?php
 
-//mode - CSV / XML
-//field - title/author/all
-//books
-
-function exportfile($type, $field, $books)
-{
-
-    $filetype = $type;
-
-    $fp = fopen($field + "." + $filetype, "w");
-}
+use Illuminate\Contracts\View\View;
 
 function console_log($output, $with_script_tags = true)
 {
@@ -35,6 +25,8 @@ function console_log($output, $with_script_tags = true)
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <!-- Styles -->
     <style>
         html,
@@ -54,6 +46,7 @@ function console_log($output, $with_script_tags = true)
         .flex-center {
             align-items: center;
             display: flex;
+            flex-direction: column;
             justify-content: center;
         }
 
@@ -83,6 +76,17 @@ function console_log($output, $with_script_tags = true)
             letter-spacing: .1rem;
             text-decoration: none;
             text-transform: uppercase;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid grey;
+            border-collapse: collapse;
+        }
+
+        .remove {
+            cursor: pointer;
         }
 
         .export {
@@ -115,61 +119,83 @@ function console_log($output, $with_script_tags = true)
         </div>
         @endif
 
-        <div class="content">
-            <div class="title m-b-md">
-                Bookshelf
-            </div>
 
-            <div class="input">
-                <form method="POST" action="{{url('addbook')}}">
-                    @csrf
-                    Title: <input type="text" name="title"><br>
-                    Author: <input type="text" name="author"><br>
-                    <input type="submit" value="Add" />
-                </form>
-            </div>
+        <form method="POST" action="/search/">
 
-            <div class="booklist">
-                <table style="width: 100%">
-                    <tr>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th> </th>
-                    </tr>
 
-                    <?php foreach ($books as $book) : ?>
-                        <?php $title = $book->title ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($book->title) ?> </td>
-                            <td><?php echo htmlspecialchars($book->author) ?> </td>
-                            <td>
-                                <form method="post" action="/delete/<?= $book->bookid ?>">
-                                    @csrf
-                                    <input type="submit" class="button" value="Del" />
-                            </td>
-                            </form>
-                        <?php endforeach ?>
-            </div>
-
-            <p> Export to CSV </p>
-            <div class="export">
-                <form method="GET" action="/export/csv/title">
-                    <input type="submit" class="button" value="By Title" />
-                </form>
-
-                <form method="GET" action="/export/csv/author">
-                    <input type="submit" class="button" value="By Author" />
-                </form>
-
-                <form method="GET" action="/export/csv/">
-                    <input type="submit" class="button" value="All" />
-                </form>
-            </div>
+        </form>
 
 
 
-
+        <div class="title m-b-md">
+            Bookshelf
         </div>
+
+        <form method="GET" action="/">
+            <input type="submit" class="button" value="Show All" />
+        </form>
+
+        <form method="GET" action="/add">
+            <input type="submit" class="button" value="New Book" />
+        </form>
+
+        <div class="booklist">
+            <table class="booktable" style="width: 100%">
+                <tr>
+                    <th>Edit </th>
+
+                    <form method="GET" action="/sort/title">
+                        <th>Title <button class="remove"><i class="fa fa-sort"></i></button></th>
+                    </form>
+
+                    <form method="GET" action="/sort/author">
+                        <th>Author <button class="remove"><i class="fa fa-sort"></i></button></th>
+                    </form>
+
+                    <th>Delete</th>
+                </tr>
+                </form>
+
+
+                <?php foreach ($books as $book) : ?>
+                    <?php $title = $book->title ?>
+                    <tr>
+                        <td>
+                            <form method="post" action="/edit/ <?= $book->bookid ?>">
+                                @csrf
+                                <button class="remove"><i class="fa fa-edit"></i></button>
+                            </form>
+                        </td>
+                        <td><?php echo htmlspecialchars($book->title) ?> </td>
+                        <td><?php echo htmlspecialchars($book->author) ?> </td>
+                        <td>
+                            <form method="post" action="/delete/<?= $book->bookid ?>">
+                                @csrf
+                                <button class="remove"><i class="fa fa-trash"></i></button>
+                        </td>
+                        </form>
+                    <?php endforeach ?>
+        </div>
+
+        <p> Export to CSV </p>
+        <div class="export">
+            <form method="GET" action="/export/csv/title">
+                <input type="submit" class="button" value="By Title" />
+            </form>
+
+            <form method="GET" action="/export/csv/author">
+                <input type="submit" class="button" value="By Author" />
+            </form>
+
+            <form method="GET" action="/export/csv/">
+                <input type="submit" class="button" value="All" />
+            </form>
+        </div>
+
+
+
+
+    </div>
     </div>
 </body>
 
