@@ -47,7 +47,6 @@ function console_log($output, $with_script_tags = true)
             align-items: center;
             display: flex;
             flex-direction: column;
-            justify-content: center;
         }
 
         .position-ref {
@@ -78,6 +77,10 @@ function console_log($output, $with_script_tags = true)
             text-transform: uppercase;
         }
 
+        table {
+            margin-top: 20px;
+        }
+
         table,
         th,
         td {
@@ -90,10 +93,15 @@ function console_log($output, $with_script_tags = true)
         }
 
         .export {
+            margin-top: 25px;
             display: flex;
             justify-content: center;
             gap: 5px;
 
+        }
+
+        .booklist {
+            text-align: center;
         }
 
         .m-b-md {
@@ -120,9 +128,10 @@ function console_log($output, $with_script_tags = true)
         @endif
 
 
-        <form method="POST" action="/search/">
-
-
+        <form method="Get" action="/search/">
+            @csrf
+            <p>Search for Author</p>
+            <span><input type="input" placeholder="Enter author name" name="author" /> <button type="submit"><i class="fa fa-search"></i></button></span>
         </form>
 
 
@@ -140,7 +149,7 @@ function console_log($output, $with_script_tags = true)
         </form>
 
         <div class="booklist">
-            <table class="booktable" style="width: 100%">
+            <table class="booktable" style="width: 120%">
                 <tr>
                     <th>Edit </th>
 
@@ -154,8 +163,8 @@ function console_log($output, $with_script_tags = true)
 
                     <th>Delete</th>
                 </tr>
-                </form>
 
+                </form>
 
                 <?php foreach ($books as $book) : ?>
                     <?php $title = $book->title ?>
@@ -175,27 +184,45 @@ function console_log($output, $with_script_tags = true)
                         </td>
                         </form>
                     <?php endforeach ?>
+            </table>
+
+            <div class="export">
+                <t2> Export to CSV </t2>
+                <form method="GET" action="/export/csv/title">
+                    <input type="submit" class="button" value="By Title" />
+                </form>
+
+                <form method="GET" action="/export/csv/author">
+                    <input type="submit" class="button" value="By Author" />
+                </form>
+
+                <form method="GET" action="/export/csv/">
+                    <input type="submit" class="button" value="All" />
+                </form>
+            </div>
+
+            <div class="export">
+                <t2> Export to XML </t2>
+                <form method="GET" action="/export/xml/title">
+                    <input type="submit" class="button" value="By Title" />
+                </form>
+
+                <form method="GET" action="/export/xml/author">
+                    <input type="submit" class="button" value="By Author" />
+                </form>
+
+                <form method="GET" action="/export/xml/">
+                    <input type="submit" class="button" value="All" />
+                </form>
+            </div>
+
+
         </div>
-
-        <p> Export to CSV </p>
-        <div class="export">
-            <form method="GET" action="/export/csv/title">
-                <input type="submit" class="button" value="By Title" />
-            </form>
-
-            <form method="GET" action="/export/csv/author">
-                <input type="submit" class="button" value="By Author" />
-            </form>
-
-            <form method="GET" action="/export/csv/">
-                <input type="submit" class="button" value="All" />
-            </form>
-        </div>
-
-
-
-
     </div>
+
+
+
+
     </div>
 </body>
 

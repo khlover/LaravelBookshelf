@@ -19,10 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::post('/addbook', [BookController::class, 'insertBook']);
 Route::post('/delete/{id}', [BookController::class, 'deleteBook']);
 Route::post('/edit/{id}', [BookController::class, 'editBook']);
-Route::post('/search/{field}', [BookController::class, 'search']);
 
 Route::get('/export/csv/{field?}', [BookController::class, 'exportToCSV']);
+Route::get('/export/xml/{field?}', [BookController::class, 'exportToXML']);
 Route::get('/sort/{field?}', [BookController::class, 'sort']);
+Route::get('/search', [BookController::class, 'search']);
 Route::get('/', [BookController::class, 'selectBooks']);
 
 //Navigation
