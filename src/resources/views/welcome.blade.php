@@ -172,7 +172,7 @@ function console_log($output, $with_script_tags = true)
                     <?php $title = $book->title ?>
                     <tr>
                         <td>
-                            <form method="post" action="/edit/ <?= $book->bookid ?>">
+                            <form method="get" action="/edit/ <?= $book->bookid ?>">
                                 @csrf
                                 <button class="remove"><i class="fa fa-edit"></i></button>
                             </form>
@@ -217,8 +217,6 @@ function console_log($output, $with_script_tags = true)
                     <input type="submit" class="button" value="All" />
                 </form>
             </div>
-
-
         </div>
     </div>
     </div>
