@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Database;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use DOMDocument;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -19,7 +20,6 @@ class BookController extends Controller
 
     function selectBooks(Request $request)
     {
-
         $books = Book::all();
         return view('welcome', ['books' => $books]);
     }
@@ -32,11 +32,10 @@ class BookController extends Controller
     }
 
 
-    function search(Request $request)
+    function search()
     {
-        $field = $request->field;
-        $value = $_POST[$field];
-        $books = Book::where($field, $value)->get();
+        $author = $_GET['author'];
+        $books = Book::where('author', 'like', $author)->get();
         return view('welcome', ['books' => $books]);
     }
 
@@ -61,6 +60,7 @@ class BookController extends Controller
         return redirect('/');
     }
 
+
     public function exportToCSV(Request $request)
     {
         $field = $request->field;
@@ -73,6 +73,53 @@ class BookController extends Controller
         }
         array_to_csv_download($data, $field);
     }
+
+    public function exportToXML(Request $request)
+    {
+        $field = $request->field;
+
+        if ($field == null) {
+            $data = Book::select('title', 'author')->get();
+            $field = "Book";
+        } else {
+            $data = Book::select($field)->get();
+        }
+        array_to_xml_download($data, $field);
+    }
+}
+
+
+function array_to_xml_download($obj, $field)
+{
+    header('Content-type: text/xml');
+    header('Content-Disposition: attachment; filename="text.xml"');
+
+    $doc = new DOMDocument('1.0');
+    $doc->formatOutput = true;
+
+    $container = $doc->createElement('container');
+    $container = $doc->appendChild($container);
+
+    foreach ($obj as $line) {
+        $root = $doc->createElement('book');
+
+        if ($field == "Book" || $field == "title") {
+            $title = $doc->createElement('Title', $line->title);
+            $title = $root->appendChild($title);
+        }
+
+        if ($field == "Book" || $field == "author") {
+            $author = $doc->createElement('Author', $line->author);
+            $author = $root->appendChild($author);
+        }
+
+        $root = $container->appendChild($root);
+    }
+
+    $xmldata =  $doc->saveXML();
+    echo $xmldata;
+    exit();
+    return Redirect::to('welcome');
 }
 
 
