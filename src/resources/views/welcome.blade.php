@@ -127,8 +127,15 @@ function console_log($output, $with_script_tags = true)
         </div>
         @endif
 
+        <form method="Get" action="/search/title">
+            @csrf
+            <p>Search for Title</p>
+            <span><input type="input" placeholder="Enter title" name="title" /> <button type="submit"><i class="fa fa-search"></i></button></span>
+        </form>
 
-        <form method="Get" action="/search/">
+
+
+        <form method="Get" action="/search/author">
             @csrf
             <p>Search for Author</p>
             <span><input type="input" placeholder="Enter author name" name="author" /> <button type="submit"><i class="fa fa-search"></i></button></span>
@@ -152,20 +159,15 @@ function console_log($output, $with_script_tags = true)
             <table class="booktable" style="width: 120%">
                 <tr>
                     <th>Edit </th>
-
                     <form method="GET" action="/sort/title">
                         <th>Title <button class="remove"><i class="fa fa-sort"></i></button></th>
                     </form>
-
                     <form method="GET" action="/sort/author">
                         <th>Author <button class="remove"><i class="fa fa-sort"></i></button></th>
                     </form>
-
                     <th>Delete</th>
                 </tr>
-
                 </form>
-
                 <?php foreach ($books as $book) : ?>
                     <?php $title = $book->title ?>
                     <tr>
@@ -219,10 +221,6 @@ function console_log($output, $with_script_tags = true)
 
         </div>
     </div>
-
-
-
-
     </div>
 </body>
 
