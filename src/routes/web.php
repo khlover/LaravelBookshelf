@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Database\BookController;
+use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 //Controller Calls
-Route::post('/addbook', [BookController::class, 'insertBook']);
-Route::post('/delete/{id}', [BookController::class, 'deleteBook']);
+Route::post('/books', [BookController::class, 'store']);
+
 Route::post('/edit/{id}', [BookController::class, 'editBook']);
 
 Route::get('/export/csv/{field?}', [BookController::class, 'exportToCSV']);
@@ -26,9 +26,16 @@ Route::get('/sort/{field?}', [BookController::class, 'sort']);
 Route::get('/edit/{id}', [BookController::class, 'selectBook']);
 Route::get('/search/author', [BookController::class, 'searchAuthor']);
 Route::get('/search/title', [BookController::class, 'searchTitle']);
-Route::get('/', [BookController::class, 'selectBooks']);
+Route::get('/books', [BookController::class, 'index']);
+
+Route::delete('/books/{id}', [BookController::class, 'destroy']);
+
 
 //Navigation
-Route::get('/add', function () {
-    return view('add', ['title' => 'Add Book']);
+Route::get('/books/create', function () {
+    return view('books.create', ['title' => 'Add Book']);
+});
+
+Route::get('/', function () {
+    return redirect('/books');
 });

@@ -172,7 +172,7 @@ function console_log($output, $with_script_tags = true)
                     <?php $title = $book->title ?>
                     <tr>
                         <td>
-                            <form method="get" action="/edit/ <?= $book->bookid ?>">
+                            <form method="get" action="// <?= $book->bookid ?>">
                                 @csrf
                                 <button class="remove"><i class="fa fa-edit"></i></button>
                             </form>
@@ -180,8 +180,9 @@ function console_log($output, $with_script_tags = true)
                         <td><?php echo htmlspecialchars($book->title) ?> </td>
                         <td><?php echo htmlspecialchars($book->author) ?> </td>
                         <td>
-                            <form method="post" action="/delete/<?= $book->bookid ?>">
+                            <form method="post" action="/books/<?= $book->bookid ?>">
                                 @csrf
+                                @method('DELETE')
                                 <button class="remove"><i class="fa fa-trash"></i></button>
                         </td>
                         </form>

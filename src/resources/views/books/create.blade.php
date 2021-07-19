@@ -80,7 +80,7 @@
         </div>
 
         <div class="input">
-            <form method="POST" action="{{url('addbook')}}">
+            <form method="POST" action="/books">
                 @csrf
                 Title: <input type="text" name="title" required><br>
                 Author: <input type="text" name="author" required><br>
