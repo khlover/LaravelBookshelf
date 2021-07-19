@@ -53,7 +53,7 @@ class BookController extends Controller
 
     public function create()
     {
-        return view('create');
+        return view('books.create');
     }
 
     public function store()

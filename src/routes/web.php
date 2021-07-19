@@ -17,13 +17,13 @@ use Illuminate\Support\Facades\Route;
 
 //Controller Calls
 Route::post('/books', [BookController::class, 'store']);
+Route::post('/books/{id}', [BookController::class, 'editBook']);
 
-Route::post('/edit/{id}', [BookController::class, 'editBook']);
-
+Route::get('/books/create', [BookController::class, 'create']);
 Route::get('/export/csv/{field?}', [BookController::class, 'exportToCSV']);
 Route::get('/export/xml/{field?}', [BookController::class, 'exportToXML']);
 Route::get('/sort/{field?}', [BookController::class, 'sort']);
-Route::get('/edit/{id}', [BookController::class, 'selectBook']);
+Route::get('/books/{id}', [BookController::class, 'show']);
 Route::get('/search/author', [BookController::class, 'searchAuthor']);
 Route::get('/search/title', [BookController::class, 'searchTitle']);
 Route::get('/books', [BookController::class, 'index']);
@@ -31,11 +31,7 @@ Route::get('/books', [BookController::class, 'index']);
 Route::delete('/books/{id}', [BookController::class, 'destroy']);
 
 
-//Navigation
-Route::get('/books/create', function () {
-    return view('books.create', ['title' => 'Add Book']);
-});
-
+//Users should be redirected to home page
 Route::get('/', function () {
     return redirect('/books');
 });
