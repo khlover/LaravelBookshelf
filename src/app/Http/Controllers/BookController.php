@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Database;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
@@ -17,52 +17,57 @@ class BookController extends Controller
      * @return void
      */
 
-    function selectBook($id)
+    function show($id)
     {
 
         $book = Book::find($id);
-        return view('edit', ['book' => $book]);
+        return view('books.edit', ['book' => $book]);
     }
 
 
-    function selectBooks()
+    function index()
     {
         $books = Book::all();
-        return view('welcome', ['books' => $books]);
+        return view('books.home', ['books' => $books]);
     }
 
     function sort($field)
     {
         $books = Book::orderBy($field, 'asc')->get();
-        return view('welcome', ['books' => $books]);
+        return view('books.home', ['books' => $books]);
     }
 
     function searchAuthor()
     {
         $author = $_GET['author'];
         $books = Book::where('author', 'like', $author)->get();
-        return view('welcome', ['books' => $books]);
+        return view('books.home', ['books' => $books]);
     }
 
     function searchTitle()
     {
         $title = $_GET['title'];
         $books = Book::where('title', 'like', $title)->get();
-        return view('welcome', ['books' => $books]);
+        return view('books.home', ['books' => $books]);
     }
 
-    public function insertBook()
+    public function create()
+    {
+        return view('books.create');
+    }
+
+    public function store()
     {
         $title = $_POST['title'];
         $author = $_POST['author'];
 
-        $update = DB::table('books')->insert([
-            'title' => $title,
-            'author' => $author
-        ]);
+        $book = new Book();
 
-        console_log($update);
-        return redirect('/');
+        $book->title = $title;
+        $book->author = $author;
+        $book->save();
+
+        return redirect('/books');
     }
 
     public function editBook($id)
@@ -73,14 +78,14 @@ class BookController extends Controller
         $target = Book::find($id);
         $target->update(['title' => $title, 'author' => $author]);
 
-        return redirect('/');
+        return redirect('/books');
     }
 
-    public function deleteBook($id)
+    public function destroy($id)
     {
         $target = Book::findOrFail($id);
         $target->delete();
-        return redirect('/');
+        return redirect('/books');
     }
 
     public function exportToCSV($field)
@@ -139,7 +144,7 @@ function array_to_xml_download($obj, $field)
     $xmldata =  $doc->saveXML();
     echo $xmldata;
     exit();
-    return Redirect::to('welcome');
+    return redirect('/books');
 }
 
 
@@ -157,7 +162,7 @@ function array_to_csv_download($array, $field)
     }
 
     fclose($f);
-    return Redirect::to('welcome');
+    return redirect('/books');
 }
 
 

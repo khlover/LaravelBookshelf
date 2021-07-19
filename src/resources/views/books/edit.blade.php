@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Add Book</title>
+    <title>Edit Book</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -76,14 +76,14 @@
 <body>
     <div class="content">
         <div class="title m-b-md">
-            Add Book
+            Edit Book
         </div>
 
         <div class="input">
-            <form method="POST" action="{{url('addbook')}}">
+            <form method="POST" action="/books/<?= $book->bookid ?>">
                 @csrf
-                Title: <input type="text" name="title" required><br>
-                Author: <input type="text" name="author" required><br>
+                Title: <input type="text" name="title" value="<?= $book->title ?>" required><br>
+                Author: <input type="text" name="author" value="<?= $book->author ?>" required><br>
                 <input type="submit" value="Add" />
             </form>
         </div>

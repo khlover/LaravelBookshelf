@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Database\BookController;
+use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,19 +16,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 //Controller Calls
-Route::post('/addbook', [BookController::class, 'insertBook']);
-Route::post('/delete/{id}', [BookController::class, 'deleteBook']);
-Route::post('/edit/{id}', [BookController::class, 'editBook']);
+Route::post('/books', [BookController::class, 'store']);
+Route::post('/books/{id}', [BookController::class, 'editBook']);
 
+Route::get('/books/create', [BookController::class, 'create']);
 Route::get('/export/csv/{field?}', [BookController::class, 'exportToCSV']);
 Route::get('/export/xml/{field?}', [BookController::class, 'exportToXML']);
 Route::get('/sort/{field?}', [BookController::class, 'sort']);
-Route::get('/edit/{id}', [BookController::class, 'selectBook']);
+Route::get('/books/{id}', [BookController::class, 'show']);
 Route::get('/search/author', [BookController::class, 'searchAuthor']);
 Route::get('/search/title', [BookController::class, 'searchTitle']);
-Route::get('/', [BookController::class, 'selectBooks']);
+Route::get('/books', [BookController::class, 'index']);
 
-//Navigation
-Route::get('/add', function () {
-    return view('add', ['title' => 'Add Book']);
+Route::delete('/books/{id}', [BookController::class, 'destroy']);
+
+
+//Users should be redirected to home page
+Route::get('/', function () {
+    return redirect('/books');
 });

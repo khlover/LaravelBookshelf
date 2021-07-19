@@ -147,11 +147,11 @@ function console_log($output, $with_script_tags = true)
             Bookshelf
         </div>
 
-        <form method="GET" action="/">
+        <form method="GET" action="/books">
             <input type="submit" class="button" value="Show All" />
         </form>
 
-        <form method="GET" action="/add">
+        <form method="GET" action="books/create">
             <input type="submit" class="button" value="New Book" />
         </form>
 
@@ -172,16 +172,17 @@ function console_log($output, $with_script_tags = true)
                     <?php $title = $book->title ?>
                     <tr>
                         <td>
-                            <form method="get" action="/edit/ <?= $book->bookid ?>">
-                                @csrf
+                            <form method="get" action="/books/ <?= $book->bookid ?>">
+
                                 <button class="remove"><i class="fa fa-edit"></i></button>
                             </form>
                         </td>
                         <td><?php echo htmlspecialchars($book->title) ?> </td>
                         <td><?php echo htmlspecialchars($book->author) ?> </td>
                         <td>
-                            <form method="post" action="/delete/<?= $book->bookid ?>">
+                            <form method="post" action="/books/<?= $book->bookid ?>">
                                 @csrf
+                                @method('DELETE')
                                 <button class="remove"><i class="fa fa-trash"></i></button>
                         </td>
                         </form>
