@@ -7,7 +7,7 @@ use App\Models\Book;
 use DOMDocument;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
+
 
 class BookController extends Controller
 {
@@ -106,6 +106,7 @@ class BookController extends Controller
 }
 
 
+
 function array_to_xml_download($obj, $field)
 {
     header('Content-type: text/xml');
@@ -155,15 +156,4 @@ function array_to_csv_download($array, $field)
 
     fclose($f);
     return redirect('/books');
-}
-
-
-function console_log($output, $with_script_tags = true)
-{
-    $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
-        ');';
-    if ($with_script_tags) {
-        $js_code = '<script>' . $js_code . '</script>';
-    }
-    echo $js_code;
 }

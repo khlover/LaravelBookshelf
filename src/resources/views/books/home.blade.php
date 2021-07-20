@@ -3,18 +3,7 @@
 
 <?php
 
-use Illuminate\Contracts\View\View;
-
-function console_log($output, $with_script_tags = true)
-{
-    $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
-        ');';
-    if ($with_script_tags) {
-        $js_code = '<script>' . $js_code . '</script>';
-    }
-    echo $js_code;
-}
-?>
+use Illuminate\Contracts\View\View; ?>
 
 <head>
     <meta charset="utf-8">
@@ -99,11 +88,11 @@ function console_log($output, $with_script_tags = true)
             cursor: pointer;
         }
 
-        .export {
+        .row {
             margin-top: 25px;
             display: flex;
             justify-content: center;
-            gap: 5px;
+            gap: 15px;
 
         }
 
@@ -129,7 +118,6 @@ function console_log($output, $with_script_tags = true)
         Bookshelf
     </div>
 
-    <?PHP $_POST = array(); ?>
     <div class="flex-center position-ref full-height">
         @if (Route::has('login'))
         <div class="top-right links">
@@ -145,25 +133,24 @@ function console_log($output, $with_script_tags = true)
         </div>
         @endif
 
-        <form method="Get" action="/search/title">
-            @csrf
-            <p>Search for Title</p>
-            <span><input type="input" placeholder="Enter title" name="title" /> <button type="submit"><i class="fa fa-search"></i></button></span>
-        </form>
+        <div class="row">
+            <form method="Get" action="/search/title">
+                @csrf
+                <h2>Search for Title</h2>
+                <span><input type="input" placeholder="Enter title" name="title" /> <button type="submit"><i class="fa fa-search"></i></button></span>
+            </form>
 
-        <form method="Get" action="/search/author">
-            @csrf
-            <p>Search for Author</p>
-            <span><input type="input" placeholder="Enter author name" name="author" /> <button type="submit"><i class="fa fa-search"></i></button></span>
-        </form>
+            <form method="Get" action="/search/author">
+                @csrf
+                <h2>Search for Author</h2>
+                <span><input type="input" placeholder="Enter author name" name="author" /> <button type="submit"><i class="fa fa-search"></i></button></span>
+            </form>
+        </div>
 
-        <form method="GET" action="/books">
-            <input type="submit" class="button" value="Show All" />
-        </form>
-
-        <form method="GET" action="books/create">
-            <input type="submit" class="button" value="New Book" />
-        </form>
+        <div class="row">
+            <a href="/"><input type="submit" class="button" value="Show All" /></a>
+            <a href="/books/create"> <input type="submit" class="button" value="New Book" /> </a>
+        </div>
 
         <div class="booklist">
             <table class="booktable" style="width: 120%">
@@ -182,56 +169,56 @@ function console_log($output, $with_script_tags = true)
                     </tr>
                     @endif
 
-                    <?php foreach ($books as $book) : ?>
-                        <?php $title = $book->title ?>
-                        <tr>
-                            <td>
-                                <form method="get" action="/books/ <?= $book->bookid ?>">
-
-                                    <button class="remove"><i class="fa fa-edit"></i></button>
-                                </form>
-                            </td>
-                            <td><?= htmlspecialchars($book->title) ?> </td>
-                            <td><?= htmlspecialchars($book->author) ?> </td>
-                            <td>
-                                <form method="post" action="/books/<?= $book->bookid ?>">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="remove"><i class="fa fa-trash"></i></button>
-                            </td>
+                    @foreach ($books as $book)
+                    <?php $title = $book->title ?>
+                    <tr>
+                        <td>
+                            <form method="get" action="/books/ <?= $book->bookid ?>">
+                                <button class="remove"><i class="fa fa-edit"></i></button>
                             </form>
-                        <?php endforeach ?>
+                        </td>
+                        <td><?= htmlspecialchars($book->title) ?> </td>
+                        <td><?= htmlspecialchars($book->author) ?> </td>
+                        <td>
+                            <form method="post" action="/books/<?= $book->bookid ?>">
+                                @csrf
+                                @method('DELETE')
+                                <button class="remove"><i class="fa fa-trash"></i></button>
+                        </td>
+                        </form>
+                        @endforeach
                 </tbody>
+
             </table>
             {{$books->links()}}
             Showing {{$books->count() + ($books->currentPage() - 1 ) * $books->perPage()}} of {{$books->total()}}
 
-            <div class="export">
+            <div class="row">
                 <t2> Export to CSV </t2>
-                <form method="GET" action="/export/csv/title">
+                <form method="GET" action="{{route('books.export-csv','title')}}">
                     <input type="submit" class="button" value="By Title" />
                 </form>
 
-                <form method="GET" action="/export/csv/author">
+                <form method="GET" action="{{route('books.export-csv','author')}}">
                     <input type="submit" class="button" value="By Author" />
                 </form>
 
-                <form method="GET" action="/export/csv/">
+                <form method="GET" action="{{route('books.export-csv')}}">
                     <input type="submit" class="button" value="All" />
                 </form>
             </div>
 
-            <div class="export">
+            <div class="row">
                 <t2> Export to XML </t2>
-                <form method="GET" action="/export/xml/title">
+                <form method="GET" action="{{route('books.export-xml', 'title')}}">
                     <input type="submit" class="button" value="By Title" />
                 </form>
 
-                <form method="GET" action="/export/xml/author">
+                <form method="GET" action="{{route('books.export-xml','author') }}">
                     <input type="submit" class="button" value="By Author" />
                 </form>
 
-                <form method="GET" action="/export/xml/">
+                <form method="GET" action="{{route('books.export-xml')}}">
                     <input type="submit" class="button" value="All" />
                 </form>
             </div>
