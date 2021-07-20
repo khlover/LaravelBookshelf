@@ -80,10 +80,10 @@
         </div>
 
         <div class="input">
-            <form method="POST" action="/books/<?= $book->bookid ?>">
+            <form method="POST" action="/books/{{$book->bookid}}">
                 @csrf
-                Title: <input type="text" name="title" value="<?= $book->title ?>" required><br>
-                Author: <input type="text" name="author" value="<?= $book->author ?>" required><br>
+                Title: <input type="text" name="title" value="{{$book->title}}" required><br>
+                Author: <input type="text" name="author" value={{$book->author}} required><br>
                 <input type="submit" value="Add" />
             </form>
         </div>
