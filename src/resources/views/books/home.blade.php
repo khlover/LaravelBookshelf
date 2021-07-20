@@ -20,7 +20,9 @@ function console_log($output, $with_script_tags = true)
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Book Shelf</title>
+    <div>
+        <title>Book Shelf</title>
+    </div>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -47,6 +49,7 @@ function console_log($output, $with_script_tags = true)
             align-items: center;
             display: flex;
             flex-direction: column;
+            text-align: center;
         }
 
         .position-ref {
@@ -57,6 +60,10 @@ function console_log($output, $with_script_tags = true)
             position: absolute;
             right: 10px;
             top: 18px;
+        }
+
+        .title {
+            text-align: center;
         }
 
         .content {
@@ -104,6 +111,12 @@ function console_log($output, $with_script_tags = true)
             text-align: center;
         }
 
+        .pagination {
+            display: flex;
+            justify-content: space-around;
+            list-style-type: none;
+        }
+
         .m-b-md {
             margin-bottom: 30px;
         }
@@ -111,6 +124,11 @@ function console_log($output, $with_script_tags = true)
 </head>
 
 <body>
+
+    <div class="title m-b-md">
+        Bookshelf
+    </div>
+
     <?PHP $_POST = array(); ?>
     <div class="flex-center position-ref full-height">
         @if (Route::has('login'))
@@ -133,19 +151,11 @@ function console_log($output, $with_script_tags = true)
             <span><input type="input" placeholder="Enter title" name="title" /> <button type="submit"><i class="fa fa-search"></i></button></span>
         </form>
 
-
-
         <form method="Get" action="/search/author">
             @csrf
             <p>Search for Author</p>
             <span><input type="input" placeholder="Enter author name" name="author" /> <button type="submit"><i class="fa fa-search"></i></button></span>
         </form>
-
-
-
-        <div class="title m-b-md">
-            Bookshelf
-        </div>
 
         <form method="GET" action="/books">
             <input type="submit" class="button" value="Show All" />
@@ -168,26 +178,39 @@ function console_log($output, $with_script_tags = true)
                     <th>Delete</th>
                 </tr>
                 </form>
-                <?php foreach ($books as $book) : ?>
-                    <?php $title = $book->title ?>
-                    <tr>
-                        <td>
-                            <form method="get" action="/books/ <?= $book->bookid ?>">
 
-                                <button class="remove"><i class="fa fa-edit"></i></button>
+                <tbody>
+                    @if ($books->count() == 0)
+                    <tr>
+                        <td colspan="4"> No books in the bookshelf. </td>
+                    </tr>
+                    @endif
+
+
+
+                    <?php foreach ($books as $book) : ?>
+                        <?php $title = $book->title ?>
+                        <tr>
+                            <td>
+                                <form method="get" action="/books/ <?= $book->bookid ?>">
+
+                                    <button class="remove"><i class="fa fa-edit"></i></button>
+                                </form>
+                            </td>
+                            <td><?= htmlspecialchars($book->title) ?> </td>
+                            <td><?= htmlspecialchars($book->author) ?> </td>
+                            <td>
+                                <form method="post" action="/books/<?= $book->bookid ?>">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="remove"><i class="fa fa-trash"></i></button>
+                            </td>
                             </form>
-                        </td>
-                        <td><?php echo htmlspecialchars($book->title) ?> </td>
-                        <td><?php echo htmlspecialchars($book->author) ?> </td>
-                        <td>
-                            <form method="post" action="/books/<?= $book->bookid ?>">
-                                @csrf
-                                @method('DELETE')
-                                <button class="remove"><i class="fa fa-trash"></i></button>
-                        </td>
-                        </form>
-                    <?php endforeach ?>
+                        <?php endforeach ?>
+                </tbody>
             </table>
+            {{$books->links()}}
+            Showing {{$books->count() + ($books->currentPage() - 1 ) * $books->perPage()}} of {{$books->total()}}
 
             <div class="export">
                 <t2> Export to CSV </t2>

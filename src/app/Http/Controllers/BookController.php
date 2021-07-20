@@ -19,35 +19,31 @@ class BookController extends Controller
 
     function show($id)
     {
-
-        $book = Book::find($id);
-        return view('books.edit', ['book' => $book]);
+        return view('books.edit', ['book' =>  Book::find($id)]);
     }
-
 
     function index()
     {
-        $books = Book::all();
-        return view('books.home', ['books' => $books]);
+        return view('books.home', ['books' => Book::paginate(5)]);
     }
 
     function sort($field)
     {
-        $books = Book::orderBy($field, 'asc')->get();
+        $books = Book::orderBy($field, 'asc')->paginate(5);
         return view('books.home', ['books' => $books]);
     }
 
     function searchAuthor()
     {
         $author = $_GET['author'];
-        $books = Book::where('author', 'like', $author)->get();
+        $books = Book::where('author', 'like', $author)->paginate(5);
         return view('books.home', ['books' => $books]);
     }
 
     function searchTitle()
     {
         $title = $_GET['title'];
-        $books = Book::where('title', 'like', $title)->get();
+        $books = Book::where('title', 'like', $title)->paginate(5);
         return view('books.home', ['books' => $books]);
     }
 
@@ -88,8 +84,10 @@ class BookController extends Controller
         return redirect('/books');
     }
 
-    public function exportToCSV($field)
+    public function exportToCSV(Request $request)
     {
+        $field = $request->field;
+
         if ($field == null) {
             $data = DB::table('books')->select('title', 'author')->get();
             $field = "Book";
