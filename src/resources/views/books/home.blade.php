@@ -169,12 +169,8 @@ function console_log($output, $with_script_tags = true)
             <table class="booktable" style="width: 120%">
                 <tr>
                     <th>Edit </th>
-                    <form method="GET" action="/sort/title">
-                        <th>Title <button class="remove"><i class="fa fa-sort"></i></button></th>
-                    </form>
-                    <form method="GET" action="/sort/author">
-                        <th>Author <button class="remove"><i class="fa fa-sort"></i></button></th>
-                    </form>
+                    <th>@sortablelink('title')</th>
+                    <th>@sortablelink('author')</th>
                     <th>Delete</th>
                 </tr>
                 </form>
@@ -185,8 +181,6 @@ function console_log($output, $with_script_tags = true)
                         <td colspan="4"> No books in the bookshelf. </td>
                     </tr>
                     @endif
-
-
 
                     <?php foreach ($books as $book) : ?>
                         <?php $title = $book->title ?>

@@ -22,7 +22,6 @@ Route::post('/books/{id}', [BookController::class, 'editBook']);
 Route::get('/books/create', [BookController::class, 'create']);
 Route::get('/export/csv/{field?}', [BookController::class, 'exportToCSV']);
 Route::get('/export/xml/{field?}', [BookController::class, 'exportToXML']);
-Route::get('/sort/{field?}', [BookController::class, 'sort']);
 Route::get('/books/{id}', [BookController::class, 'show']);
 Route::get('/search/author', [BookController::class, 'searchAuthor']);
 Route::get('/search/title', [BookController::class, 'searchTitle']);

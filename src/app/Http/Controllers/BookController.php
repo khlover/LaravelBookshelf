@@ -24,26 +24,20 @@ class BookController extends Controller
 
     function index()
     {
-        return view('books.home', ['books' => Book::paginate(5)]);
-    }
-
-    function sort($field)
-    {
-        $books = Book::orderBy($field, 'asc')->paginate(5);
-        return view('books.home', ['books' => $books]);
+        return view('books.home', ['books' => Book::sortable()->paginate(5)]);
     }
 
     function searchAuthor()
     {
         $author = $_GET['author'];
-        $books = Book::where('author', 'like', $author)->paginate(5);
+        $books = Book::where('author', 'like', $author)->sortable()->paginate(5);
         return view('books.home', ['books' => $books]);
     }
 
     function searchTitle()
     {
         $title = $_GET['title'];
-        $books = Book::where('title', 'like', $title)->paginate(5);
+        $books = Book::where('title', 'like', $title)->sortable()->paginate(5);
         return view('books.home', ['books' => $books]);
     }
 
