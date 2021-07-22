@@ -7,24 +7,24 @@ services:
     environment:
       DB_DATABASE: laravel
       DB_HOST: mysql
-      DB_PASSWORD: secret
+      DB_PASSWORD: $MYSQL_PASSWORD
       DB_USERNAME: laravel
-      APP_DEBUG: 'true'
+      APP_DEBUG: "true"
       APP_ENV: local
       APP_KEY: ayGbuqVXJakHHvMTZCjKqzhVqMNsHMQs
       LOG_CHANNEL: stderr
     ports:
-    - '80:80'
+      - "80:80"
     volumes:
-    - ./src:/var/www/html
+      - ./src:/var/www/html
 
   mysql:
     image: mysql:8
     container_name: $COMPOSE_PROJECT_NAME-mysql
     ports:
-    - '3306:3306'
+      - "3306:3306"
     environment:
       MYSQL_USER: laravel
-      MYSQL_PASSWORD: password
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
       MYSQL_DATABASE: laravel
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: $MYSQL_ADMIN_PASSWORD
