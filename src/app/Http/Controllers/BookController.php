@@ -27,16 +27,16 @@ class BookController extends Controller
         return view('books.home', ['books' => Book::sortable()->paginate(5)]);
     }
 
-    function searchAuthor()
+    function searchAuthor(Request $request)
     {
-        $author = $_GET['author'];
+        $author = $request->author;
         $books = Book::where('author', 'like', $author)->sortable()->paginate(5);
         return view('books.home', ['books' => $books]);
     }
 
-    function searchTitle()
+    function searchTitle(Request $request)
     {
-        $title = $_GET['title'];
+        $title = $request->title;
         $books = Book::where('title', 'like', $title)->sortable()->paginate(5);
         return view('books.home', ['books' => $books]);
     }
@@ -46,13 +46,12 @@ class BookController extends Controller
         return view('books.create');
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        $title = $_POST['title'];
-        $author = $_POST['author'];
+        $title = $request->title;
+        $author = $request->author;
 
         $book = new Book();
-
         $book->title = $title;
         $book->author = $author;
         $book->save();
@@ -60,11 +59,11 @@ class BookController extends Controller
         return redirect('/books');
     }
 
-    public function editBook($id)
+    public function editBook(Request $request)
     {
-        $title = $_POST['title'];
-        $author = $_POST['author'];
-
+        $title = $request->title;
+        $author = $request->author;
+        $id = $request->id;
         $target = Book::find($id);
         $target->update(['title' => $title, 'author' => $author]);
 
@@ -88,7 +87,7 @@ class BookController extends Controller
         } else {
             $data = DB::table('books')->select($field)->get();
         }
-        array_to_csv_download($data, $field);
+        Create_CSV($data, $field);
     }
 
     public function exportToXML(Request $request)
@@ -101,13 +100,11 @@ class BookController extends Controller
         } else {
             $data = Book::select($field)->get();
         }
-        array_to_xml_download($data, $field);
+        Create_XML($data, $field);
     }
 }
 
-
-
-function array_to_xml_download($obj, $field)
+function Create_XML($obj, $field)
 {
     header('Content-type: text/xml');
     header('Content-Disposition: attachment; filename=' . $field . 's.xml');
@@ -140,15 +137,14 @@ function array_to_xml_download($obj, $field)
     return redirect('/books');
 }
 
-
-function array_to_csv_download($array, $field)
+function Create_CSV($obj, $field)
 {
     header("Content-Type: application/csv");
     header("Content-Disposition: attachment; filename= " . $field . "s.csv");
 
     $f = fopen('php://output', 'w');
 
-    foreach ($array as $line) {
+    foreach ($obj as $line) {
         if (isset($line)) {
             fputcsv($f, (array) $line, ':');
         }
