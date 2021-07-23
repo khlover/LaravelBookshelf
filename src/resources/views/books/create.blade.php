@@ -17,11 +17,22 @@
             Add Book
         </div>
 
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <h2>Errors!</h2>
+            <div>
+                @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
         <div class="input">
             <form method="POST" action="{{route('books.store')}}">
                 @csrf
-                Title: <input type="text" name="title" required><br>
-                Author: <input type="text" name="author" required><br>
+                @if($errors->has('title')) * @endif Title:<input type="text" name="title" value="{{old('title')}}"><br>
+                @if($errors->has('author')) * @endif Author: <input type="text" name="author" value="{{old('author')}}"><br>
                 <input type="submit" value="Add" />
             </form>
         </div>
