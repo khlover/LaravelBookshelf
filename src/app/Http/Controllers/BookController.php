@@ -114,7 +114,7 @@ class BookController extends Controller
      *
      * @return void
      */
-    public function editBook(Request $request)
+    public function editBook(BookInputPost $request)
     {
         $title = $request->title;
         $author = $request->author;
