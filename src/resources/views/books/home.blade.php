@@ -17,104 +17,15 @@ use Illuminate\Contracts\View\View; ?>
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{asset('css/home.css')}}">
 
     <!-- Styles -->
-    <style>
-        html,
-        body {
-            background-color: #fff;
-            color: #636b6f;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 200;
-            height: 100vh;
-            margin: 0;
-        }
 
-        .full-height {
-            height: 100vh;
-        }
-
-        .flex-center {
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .position-ref {
-            position: relative;
-        }
-
-        .top-right {
-            position: absolute;
-            right: 10px;
-            top: 18px;
-        }
-
-        .title {
-            text-align: center;
-        }
-
-        .content {
-            text-align: center;
-        }
-
-        .title {
-            font-size: 84px;
-        }
-
-        .links>a {
-            color: #636b6f;
-            padding: 0 25px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: .1rem;
-            text-decoration: none;
-            text-transform: uppercase;
-        }
-
-        table {
-            margin-top: 20px;
-        }
-
-        table,
-        th,
-        td {
-            border: 1px solid grey;
-            border-collapse: collapse;
-        }
-
-        .remove {
-            cursor: pointer;
-        }
-
-        .row {
-            margin-top: 25px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-
-        }
-
-        .booklist {
-            text-align: center;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: space-around;
-            list-style-type: none;
-        }
-
-        .m-b-md {
-            margin-bottom: 30px;
-        }
-    </style>
 </head>
 
 <body>
 
-    <div class="title m-b-md">
+    <div class=" title m-b-md">
         Bookshelf
     </div>
 
