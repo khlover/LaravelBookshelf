@@ -19,7 +19,6 @@
             Edit Book
         </div>
 
-
         @if ($errors->any())
         <div class="alert alert-danger">
             <h2>Errors!</h2>
@@ -34,8 +33,8 @@
         <div class="input">
             <form method="POST" action="/books/{{$book->bookid }}">
                 @csrf
-                @if($errors->has('title')) * @endif Title:<input type="text" name="title" value="{{old('title')}}"><br>
-                @if($errors->has('author')) * @endif Author: <input type="text" name="author" value="{{old('author')}}"><br>
+                Title: <input type="text" name="title" value="{{$book->title}}" required><br>
+                Author: <input type="text" name="author" value="{{$book->author}}" required><br>
                 <input type="submit" value="Edit" />
             </form>
         </div>
