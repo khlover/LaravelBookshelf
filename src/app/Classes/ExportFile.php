@@ -68,11 +68,20 @@ class ExportFile
         header("Content-Type: application/csv");
         header("Content-Disposition: attachment; filename= " . $field . "s.csv");
 
+        if ($field != "Books") {
+            $headers = [$field];
+        } else {
+
+            $headers = ['Title', 'Author'];
+        }
+
         $f = fopen('php://output', 'w');
 
+
+        fputcsv($f, $headers);
         foreach ($obj as $line) {
             if (isset($line)) {
-                fputcsv($f, (array) $line, ':');
+                fputcsv($f, get_object_vars($line));
             }
         }
 

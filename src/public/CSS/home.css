@@ -8,6 +8,11 @@ body {
     margin: 0;
 }
 
+.errormessage {
+    color: red;
+    font-weight: bold;
+}
+
 .full-height {
     height: 100vh;
 }
