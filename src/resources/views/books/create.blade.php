@@ -18,7 +18,7 @@
         </div>
 
         @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="errormessage">
             <h2>Errors!</h2>
             <div>
                 @foreach ($errors->all() as $error)

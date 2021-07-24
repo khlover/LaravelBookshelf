@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Http\Requests\BookInputPost;
+use App\Http\Requests\BookSearchAuthor;
+use App\Http\Requests\BookSearchTitle;
+
 use App\Http\Controllers\Controller;
 use App\Classes\ExportFile;
 
@@ -55,11 +58,12 @@ class BookController extends Controller
      *
      * @return void
      */
-    function searchAuthor(Request $request)
+    function searchAuthor(BookSearchAuthor $request)
     {
         $author = $request->author;
+        $field = "author";
         $books = Book::where('author', 'like', $author)->sortable()->paginate(5);
-        return view('books.home', ['books' => $books]);
+        return view('books.home', ['books' => $books, 'query' =>  $field . "," . $author]);
     }
 
     /**
@@ -69,11 +73,11 @@ class BookController extends Controller
      *
      * @return void
      */
-    function searchTitle(Request $request)
+    function searchTitle(BookSearchTitle $request)
     {
         $title = $request->title;
         $books = Book::where('title', 'like', $title)->sortable()->paginate(5);
-        return view('books.home', ['books' => $books]);
+        return view('books.home', ['books' => $books, 'query' => "title," . $title]);
     }
 
     /**
@@ -140,7 +144,7 @@ class BookController extends Controller
     }
 
     /**
-     * Sets what fields will be used to generate the CSV, then calls external function to perform the task.
+     * Sets what fields will be used to generate the CSV,filters by latest search if it exits, then calls external function to perform the task.
      *
      * @param mixed $request - Contains both GET and POST values.
      *
@@ -148,20 +152,27 @@ class BookController extends Controller
      */
     public function exportToCSV(Request $request)
     {
-        $field = $request->field;
+        $field = strtolower($request->field);
+        $search = explode(",", $request->search);
         $export = new ExportFile;
 
-        if ($field == null) {
-            $data = DB::table('books')->select('title', 'author')->get();
+        if ($field == 'all') {
+            $data = DB::table('books')->when($search[0] != "", function ($query) use ($search) {
+                return $query->where($search[0], $search[1]);
+            })->get();
+
             $field = "Book";
         } else {
-            $data = DB::table('books')->select($field)->get();
+            $data = DB::table('books')->select($field)->when($search[0] != "", function ($query) use ($search) {
+                return $query->where($search[0], $search[1]);
+            })->get();
         }
+
         $export->create_CSV($data, $field);
     }
 
     /**
-     * Sets what fields will be used to generate the XML, then calls external function to perform the task.
+     * Sets what fields will be used to generate the XML, filters by latest search if it exists,then calls external function to perform the task.
      *
      * @param mixed $request - Contains both GET and POST values.
      *
@@ -169,15 +180,34 @@ class BookController extends Controller
      */
     public function exportToXML(Request $request)
     {
-        $field = $request->field;
+        $field = strtolower($request->field);
+        $search = explode(",", $request->search);
         $export = new ExportFile;
 
-        if ($field == null) {
-            $data = Book::select('title', 'author')->get();
+
+        if ($field == 'all') {
+            $data = DB::table('books')->when($search[0] != "", function ($query) use ($search) {
+                return $query->where($search[0], $search[1]);
+            })->get();
+
             $field = "Book";
         } else {
-            $data = Book::select($field)->get();
+            $data = DB::table('books')->select($field)->when($search[0] != "", function ($query) use ($search) {
+                return $query->where($search[0], $search[1]);
+            })->get();
         }
+
         $export->create_XML($data, $field);
     }
+}
+
+
+function console_log($output, $with_script_tags = true)
+{
+    $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
+        ');';
+    if ($with_script_tags) {
+        $js_code = '<script>' . $js_code . '</script>';
+    }
+    echo $js_code;
 }
