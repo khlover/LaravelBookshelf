@@ -38,6 +38,22 @@ class BooksTest extends TestCase
     }
 
     /** @test */
+    public function booked_added_special_chars(){
+         $response = $this->post('/books', [
+            'title' => '希望',
+            'author' => 'Arsène Lupin'
+        ]);
+
+        $this->assertDatabaseHas('books', [
+             'title' => '希望',
+            'author' => 'Arsène Lupin'
+        ]);
+
+        $this->followRedirects($response)->assertSee('希望');
+         $this->followRedirects($response)->assertSee('Arsène Lupin');
+    }
+
+    /** @test */
     public function book_added_duplicate_fail()
     {
 
