@@ -11,10 +11,11 @@ You can access a hosted version of the current build here at http://18.116.8.86/
 
 ## Setup
 1. Clone the repository.
-1. Rename .env.example to .env and change contents as needed.
 3. Start the containers by running `docker-compose up -d` in the project root.
 4. Install the composer packages by running `docker-compose exec laravel composer install`.
-5. Perform a database migration with php artisan migrate.
+5. Rename .env.example to .env and change contents as needed.
+   -Run **php artisan key:generate** to generate a laravel application key to your env file.
+7. Perform a database migration with php artisan migrate.
 If you encounter an access denied error, run 
 
    > ALTER USER 'laravel'@'localhost' IDENTIFIED WITH mysql_native_password BY 'YOURPASSWORD'; 
