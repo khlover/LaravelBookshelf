@@ -21,6 +21,132 @@ use Illuminate\Contracts\View\View; ?>
 
 
     <!-- Styles -->
+    <style>
+html,
+body {
+    background-color: #fff;
+    color: #636b6f;
+    font-family: "Nunito", sans-serif;
+    font-weight: 200;
+    height: 100vh;
+    margin: 0;
+}
+
+.button_row {
+    display: flex;
+    margin-top: 25px;
+    justify-content: center;
+    gap: 15px;
+}
+
+.errormessage {
+    color: red;
+    font-weight: bold;
+}
+
+.full-height {
+    height: 100vh;
+}
+
+.flex-center {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.position-ref {
+    position: relative;
+}
+
+.top-right {
+    position: absolute;
+    right: 10px;
+    top: 18px;
+}
+
+.title {
+    text-align: center;
+}
+
+.content {
+    text-align: center;
+}
+
+.title {
+    font-size: 84px;
+}
+
+.links > a {
+    color: #636b6f;
+    padding: 0 25px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+table {
+    margin-top: 20px;
+
+}
+
+table,
+th,
+td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+}
+
+.remove {
+    cursor: pointer;
+}
+
+.searchrow {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+}
+
+.booklist {
+    text-align: center;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+}
+
+.m-b-md {
+    margin-bottom: 30px;
+}
+
+@media only screen and (max-width: 700px) {
+    .searchrow{
+         flex-direction: column;
+    }
+
+    table{
+        max-width: 300px;
+
+    }
+
+    td{
+        max-width: 50px;
+        overflow: scroll;
+    }
+
+    .title{
+        font-size: 50px;
+        margin-bottom: 0px;
+    }
+}
+
+    </style>
 
 </head>
 
@@ -50,7 +176,7 @@ use Illuminate\Contracts\View\View; ?>
         </div>
         @endif
 
-        <div class="row">
+        <div class="searchrow">
             <form method="Get" action="{{route('books.search-title')}}">
                 @csrf
                 <h2>Search for Title</h2>
@@ -71,7 +197,7 @@ use Illuminate\Contracts\View\View; ?>
         @endif
 
 
-        <div class="row">
+        <div class="buttonrow">
             <a href="/"><input type="submit" class="button" value="Show All" /></a>
             <a href="/books/create"> <input type="submit" class="button" value="New Book" /> </a>
         </div>
@@ -117,7 +243,7 @@ use Illuminate\Contracts\View\View; ?>
             {{$books->links()}}
             Showing {{$books->count() + ($books->currentPage() - 1 ) * $books->perPage()}} of {{$books->total()}}
 
-            <div class="row">
+            <div class="button_row">
                 <t2> Export to CSV By </t2>
                 <form method="GET" action="{{route('books.export-csv',['search' => $query])}}">
                     <input type="submit" class="button" name="field" value="Title" />
@@ -132,7 +258,7 @@ use Illuminate\Contracts\View\View; ?>
                 </form>
             </div>
 
-            <div class="row">
+            <div class="button_row">
                 <t2> Export to XML By </t2>
                 <form method="GET" action="{{route('books.export-xml',['search' => $query])}}">
                     <input type="submit" class="button" name="field" value="Title" />

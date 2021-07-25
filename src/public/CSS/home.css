@@ -8,6 +8,13 @@ body {
     margin: 0;
 }
 
+.button_row {
+    display: flex;
+    margin-top: 25px;
+    justify-content: center;
+    gap: 15px;
+}
+
 .errormessage {
     color: red;
     font-weight: bold;
@@ -71,9 +78,10 @@ td {
     cursor: pointer;
 }
 
-.row {
+.searchrow {
     margin-top: 25px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     gap: 15px;
 }
@@ -90,4 +98,24 @@ td {
 
 .m-b-md {
     margin-bottom: 30px;
+}
+
+@media only screen and (max-width: 700px) {
+    .searchrow {
+        flex-direction: column;
+    }
+
+    table {
+        max-width: 300px;
+    }
+
+    td {
+        max-width: 50px;
+        overflow: scroll;
+    }
+
+    .title {
+        font-size: 50px;
+        margin-bottom: 0px;
+    }
 }
