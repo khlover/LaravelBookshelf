@@ -184,7 +184,6 @@ class BookController extends Controller
         $search = explode(",", $request->search);
         $export = new ExportFile;
 
-
         if ($field == 'all') {
             $data = DB::table('books')->when($search[0] != "", function ($query) use ($search) {
                 return $query->where($search[0], $search[1]);
@@ -196,7 +195,6 @@ class BookController extends Controller
                 return $query->where($search[0], $search[1]);
             })->get();
         }
-
         $export->create_XML($data, $field);
     }
 }

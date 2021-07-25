@@ -51,13 +51,13 @@ use Illuminate\Contracts\View\View; ?>
         @endif
 
         <div class="row">
-            <form method="Get" action="/search/title">
+            <form method="Get" action="{{route('books.search-title')}}">
                 @csrf
                 <h2>Search for Title</h2>
                 <span><input type="input" placeholder="Enter title" name="title" required /> <button type="submit"><i class="fa fa-search"></i></button></span>
             </form>
 
-            <form method="Get" action="/search/author">
+            <form method="Get" action="{{route('books.search-author')}}">
                 @csrf
                 <h2>Search for Author</h2>
                 <span><input type="input" placeholder="Enter author name" name="author" required /> <button type="submit"><i class="fa fa-search"></i></button></span>

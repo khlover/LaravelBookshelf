@@ -8,8 +8,7 @@ use Faker\Generator as Faker;
 $factory->define(Book::class, function (Faker $faker) {
 
     return [
-        'title' => 'Test Title',
-        'author' => 'Test Author',
-        'bookid' => '1'
+        'title' => $faker->name(),
+        'author' => $faker->name(),
     ];
 });
