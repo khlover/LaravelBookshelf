@@ -38,7 +38,7 @@ class BookController extends Controller
      */
     function show($id)
     {
-        return view('books.edit', ['book' =>  Book::find($id)]);
+        return view('books.edit', ['book' =>  Book::findOrFail($id)]);
     }
 
     /**
@@ -123,7 +123,7 @@ class BookController extends Controller
         $title = $request->title;
         $author = $request->author;
         $id = $request->id;
-        $target = Book::find($id);
+        $target = Book::findOrFail($id);
         $target->update(['title' => $title, 'author' => $author]);
 
         return redirect('/books');
