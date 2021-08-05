@@ -407,11 +407,11 @@ class BooksTest extends TestCase
         $f = fopen('php://output', 'w');
 
 
-        fputcsv($f, $headers);
+        //fputcsv($f, $headers);
         foreach ($obj as $line) {
             if (isset($line)) {
                 $linecount++;
-                fputcsv($f, get_object_vars($line));
+               // fputcsv($f, get_object_vars($line));
             }
         }
 
@@ -440,11 +440,11 @@ class BooksTest extends TestCase
         $f = fopen('php://output', 'w');
 
 
-        fputcsv($f, $headers);
+        //fputcsv($f, $headers);
         foreach ($obj as $line) {
             if (isset($line)) {
                 $linecount++;
-                fputcsv($f, get_object_vars($line));
+               // fputcsv($f, get_object_vars($line));
             }
         }
 
@@ -472,11 +472,11 @@ class BooksTest extends TestCase
 
         $f = fopen('php://output', 'w');
 
-        fputcsv($f, $headers);
+        //fputcsv($f, $headers);
         foreach ($obj as $line) {
             if (isset($line)) {
                 $linecount++;
-                fputcsv($f, get_object_vars($line));
+              //  fputcsv($f, get_object_vars($line));
             }
         }
 
