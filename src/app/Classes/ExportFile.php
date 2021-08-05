@@ -6,7 +6,6 @@ use DOMDocument;
 
 class ExportFile
 {
-
     //Creates instance
     public function __construct()
     {
@@ -23,37 +22,36 @@ class ExportFile
 
     function create_XML($obj, $field)
     {
-        header('Content-type: text/xml');
-        header('Content-Disposition: attachment; filename=' . $field . 's.xml');
+        header("Content-type: text/xml");
+        header("Content-Disposition: attachment; filename=" . $field . "s.xml");
 
-        $doc = new DOMDocument('1.0');
+        $doc = new DOMDocument("1.0");
         $doc->formatOutput = true;
 
-        $container = $doc->createElement('container');
+        $container = $doc->createElement("container");
         $container = $doc->appendChild($container);
 
         foreach ($obj as $line) {
-            $root = $doc->createElement('book');
+            $root = $doc->createElement("book");
 
             if ($field == "Book" || $field == "title") {
-                $title = $doc->createElement('Title', $line->title);
+                $title = $doc->createElement("Title", $line->title);
                 $title = $root->appendChild($title);
             }
 
             if ($field == "Book" || $field == "author") {
-                $author = $doc->createElement('Author', $line->author);
+                $author = $doc->createElement("Author", $line->author);
                 $author = $root->appendChild($author);
             }
 
             $root = $container->appendChild($root);
         }
 
-        $xmldata =  $doc->saveXML();
+        $xmldata = $doc->saveXML();
         echo $xmldata;
         exit();
-        return redirect('/books');
+        return redirect("/books");
     }
-
 
     /**
      * Creates CSV file from the database object then downloads to user via headers.
@@ -66,17 +64,17 @@ class ExportFile
     function create_CSV($obj, $field)
     {
         header("Content-Type: application/csv");
-        header("Content-Disposition: attachment; filename= " . $field . "s.csv");
+        header(
+            "Content-Disposition: attachment; filename= " . $field . "s.csv"
+        );
 
         if ($field != "Books") {
             $headers = [$field];
         } else {
-
-            $headers = ['Title', 'Author'];
+            $headers = ["Title", "Author"];
         }
 
-        $f = fopen('php://output', 'w');
-
+        $f = fopen("php://output", "w");
 
         fputcsv($f, $headers);
         foreach ($obj as $line) {
@@ -86,6 +84,6 @@ class ExportFile
         }
 
         fclose($f);
-        return redirect('/books');
+        return redirect("/books");
     }
 }

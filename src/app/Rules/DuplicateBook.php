@@ -30,7 +30,9 @@ class DuplicateBook implements Rule
      */
     public function passes($attribute, $value)
     {
-        return Book::where('title', '=', $this->params->title)->where('author', '=', $this->params->author)->count() == 0;
+        return Book::where("title", "=", $this->params->title)
+            ->where("author", "=", $this->params->author)
+            ->count() == 0;
     }
 
     /**
@@ -40,6 +42,6 @@ class DuplicateBook implements Rule
      */
     public function message()
     {
-        return 'Book already exists on bookshelf';
+        return "Book already exists on bookshelf";
     }
 }
