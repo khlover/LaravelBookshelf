@@ -13,7 +13,6 @@ use App\Classes\ExportFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-
 /**
  * BookController - Contains all methods related to using the Book Model
  *
@@ -38,7 +37,7 @@ class BookController extends Controller
      */
     function show($id)
     {
-        return view('books.edit', ['book' =>  Book::findOrFail($id)]);
+        return view("books.edit", ["book" => Book::findOrFail($id)]);
     }
 
     /**
@@ -48,7 +47,7 @@ class BookController extends Controller
      */
     function index()
     {
-        return view('books.home', ['books' => Book::sortable()->paginate(5)]);
+        return view("books.home", ["books" => Book::sortable()->paginate(5)]);
     }
 
     /**
@@ -62,8 +61,13 @@ class BookController extends Controller
     {
         $author = $request->author;
         $field = "author";
-        $books = Book::where('author', 'like', $author)->sortable()->paginate(5);
-        return view('books.home', ['books' => $books, 'query' =>  $field . "," . $author]);
+        $books = Book::where("author", "like", $author)
+            ->sortable()
+            ->paginate(5);
+        return view("books.home", [
+            "books" => $books,
+            "query" => $field . "," . $author,
+        ]);
     }
 
     /**
@@ -76,8 +80,13 @@ class BookController extends Controller
     function searchTitle(BookSearchTitle $request)
     {
         $title = $request->title;
-        $books = Book::where('title', 'like', $title)->sortable()->paginate(5);
-        return view('books.home', ['books' => $books, 'query' => "title," . $title]);
+        $books = Book::where("title", "like", $title)
+            ->sortable()
+            ->paginate(5);
+        return view("books.home", [
+            "books" => $books,
+            "query" => "title," . $title,
+        ]);
     }
 
     /**
@@ -87,9 +96,8 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('books.create');
+        return view("books.create");
     }
-
 
     /**
      * Creates a new record based on request values then inserts it to the database.
@@ -108,7 +116,7 @@ class BookController extends Controller
         $book->author = $author;
         $book->save();
 
-        return redirect('/books');
+        return redirect("/books");
     }
 
     /**
@@ -124,9 +132,9 @@ class BookController extends Controller
         $author = $request->author;
         $id = $request->id;
         $target = Book::findOrFail($id);
-        $target->update(['title' => $title, 'author' => $author]);
+        $target->update(["title" => $title, "author" => $author]);
 
-        return redirect('/books');
+        return redirect("/books");
     }
 
     /**
@@ -140,7 +148,7 @@ class BookController extends Controller
     {
         $target = Book::findOrFail($id);
         $target->delete();
-        return redirect('/books');
+        return redirect("/books");
     }
 
     /**
@@ -152,23 +160,7 @@ class BookController extends Controller
      */
     public function exportToCSV(Request $request)
     {
-        $field = strtolower($request->field);
-        $search = explode(",", $request->search);
-        $export = new ExportFile;
-
-        if ($field == 'all') {
-            $data = DB::table('books')->when($search[0] != "", function ($query) use ($search) {
-                return $query->where($search[0], $search[1]);
-            })->get();
-
-            $field = "Book";
-        } else {
-            $data = DB::table('books')->select($field)->when($search[0] != "", function ($query) use ($search) {
-                return $query->where($search[0], $search[1]);
-            })->get();
-        }
-
-        $export->create_CSV($data, $field);
+        Book::toCSV($request);
     }
 
     /**
@@ -180,32 +172,7 @@ class BookController extends Controller
      */
     public function exportToXML(Request $request)
     {
-        $field = strtolower($request->field);
-        $search = explode(",", $request->search);
-        $export = new ExportFile;
-
-        if ($field == 'all') {
-            $data = DB::table('books')->when($search[0] != "", function ($query) use ($search) {
-                return $query->where($search[0], $search[1]);
-            })->get();
-
-            $field = "Book";
-        } else {
-            $data = DB::table('books')->select($field)->when($search[0] != "", function ($query) use ($search) {
-                return $query->where($search[0], $search[1]);
-            })->get();
-        }
-        $export->create_XML($data, $field);
+        Book::toXML($request);
     }
 }
 
-
-function console_log($output, $with_script_tags = true)
-{
-    $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
-        ');';
-    if ($with_script_tags) {
-        $js_code = '<script>' . $js_code . '</script>';
-    }
-    echo $js_code;
-}

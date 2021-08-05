@@ -25,7 +25,7 @@ class BookSearchAuthor extends FormRequest
     public function rules()
     {
         return [
-            'author' => ['required',],
+            "author" => ["required"],
         ];
     }
 
@@ -37,7 +37,7 @@ class BookSearchAuthor extends FormRequest
     public function messages()
     {
         return [
-            'author.required' => 'Please enter an author'
+            "author.required" => "Please enter an author",
         ];
     }
 }

@@ -25,7 +25,7 @@ class BookSearchTitle extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required'],
+            "title" => ["required"],
         ];
     }
 
@@ -37,7 +37,7 @@ class BookSearchTitle extends FormRequest
     public function messages()
     {
         return [
-            'title.required' => 'Please enter a title',
+            "title.required" => "Please enter a title",
         ];
     }
 }

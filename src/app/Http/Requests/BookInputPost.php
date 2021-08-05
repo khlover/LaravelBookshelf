@@ -25,8 +25,8 @@ class BookInputPost extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', new DuplicateBook($this)],
-            'author' => ['required',],
+            "title" => ["required", new DuplicateBook($this)],
+            "author" => ["required"],
         ];
     }
 
@@ -38,8 +38,8 @@ class BookInputPost extends FormRequest
     public function messages()
     {
         return [
-            'title.required' => 'Please enter a title',
-            'author.required' => 'Please enter an author'
+            "title.required" => "Please enter a title",
+            "author.required" => "Please enter an author",
         ];
     }
 }
