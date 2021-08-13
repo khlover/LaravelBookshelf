@@ -1,7 +1,7 @@
 # Bookshelf
 
 ## Hosted
-You can access a hosted version of the current build here at http://18.116.8.86/books
+Hosted version is currently unavailable. 
 ![image](https://user-images.githubusercontent.com/17068353/126904681-4bb20a3c-b33a-41df-89da-912da71c5045.png)
 
 # Setup
